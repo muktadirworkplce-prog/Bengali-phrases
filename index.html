@@ -4,63 +4,130 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>বাগধারা MCQ টেস্ট</title>
   <style>
-    :root{
-      --bg:#0f1724;
-      --card:#0b1220;
-      --accent:#06b6d4;
-      --text:#e6eef6;
-      --muted:#9fb0c0;
-      --correct:#16a34a;
-      --wrong:#ef4444;
-      --glass: rgba(255,255,255,0.03);
-      --radius:14px;
+/* General body styling */
+body {
+    font-family: 'Poppins', sans-serif;
+    background: #e0e5ec;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+    color: #333;
+}
+
+/* Container for the quiz */
+.quiz-container {
+    background: #e0e5ec;
+    border-radius: 20px;
+    box-shadow: 10px 10px 20px #babecc, -10px -10px 20px #ffffff;
+    padding: 30px 40px;
+    max-width: 700px;
+    width: 90%;
+    margin-top: 50px;
+}
+
+/* Heading */
+.quiz-container h1 {
+    text-align: center;
+    font-weight: 700;
+    margin-bottom: 30px;
+    color: #2e3d49;
+}
+
+/* Timer and Marks container */
+.top-info {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 25px;
+}
+
+.top-info div {
+    background: #e0e5ec;
+    padding: 10px 20px;
+    border-radius: 15px;
+    box-shadow: inset 5px 5px 10px #babecc, inset -5px -5px 10px #ffffff;
+    font-weight: 600;
+}
+
+/* Question Box */
+.question-box {
+    background: #e0e5ec;
+    padding: 20px;
+    border-radius: 15px;
+    margin-bottom: 20px;
+    box-shadow: 5px 5px 15px #babecc, -5px -5px 15px #ffffff;
+    font-size: 18px;
+}
+
+/* Options Buttons */
+.options button {
+    display: block;
+    width: 100%;
+    padding: 12px 20px;
+    margin: 10px 0;
+    border: none;
+    border-radius: 15px;
+    background: #e0e5ec;
+    box-shadow: 5px 5px 10px #babecc, -5px -5px 10px #ffffff;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.options button:hover {
+    transform: translateY(-2px);
+    box-shadow: 2px 2px 5px #babecc, -2px -2px 5px #ffffff;
+}
+
+/* Correct & Wrong Option styles */
+.correct {
+    background-color: #4caf50 !important;
+    color: white;
+    box-shadow: inset 5px 5px 10px #3b8e3b, inset -5px -5px 10px #66c166;
+}
+
+.wrong {
+    background-color: #f44336 !important;
+    color: white;
+    box-shadow: inset 5px 5px 10px #c33b31, inset -5px -5px 10px #f46666;
+}
+
+/* Start Button */
+.start-btn {
+    display: block;
+    margin: 0 auto 30px auto;
+    padding: 12px 30px;
+    border-radius: 20px;
+    border: none;
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+    background: #e0e5ec;
+    box-shadow: 5px 5px 10px #babecc, -5px -5px 10px #ffffff;
+    transition: all 0.2s ease;
+}
+
+.start-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 2px 2px 5px #babecc, -2px -2px 5px #ffffff;
+}
+
+/* Responsive */
+@media screen and (max-width: 768px) {
+    .quiz-container {
+        padding: 20px 25px;
     }
-    *{box-sizing:border-box;font-family: "Noto Sans Bengali", "Segoe UI", system-ui, Arial; }
-    html,body{height:100%;margin:0;background:linear-gradient(180deg,#071022 0%, #07172a 100%);color:var(--text);}
-    .wrap{max-width:900px;margin:18px auto;padding:16px;}
-    .header{
-      display:flex;gap:12px;align-items:center;justify-content:space-between;margin-bottom:12px;
+
+    .question-box {
+        font-size: 16px;
     }
-    .title{font-size:20px;font-weight:700;}
-    .meta{display:flex;gap:8px;align-items:center;}
-    .btn{
-      background:var(--accent);color:#022;border:none;padding:8px 12px;border-radius:10px;font-weight:700;
-      box-shadow:0 6px 18px rgba(6,182,212,0.12);cursor:pointer;
+
+    .options button {
+        font-size: 14px;
     }
-    .btn.ghost{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--text);box-shadow:none}
-    .panel{background:var(--card);padding:14px;border-radius:var(--radius);box-shadow:0 6px 30px rgba(2,6,23,0.6)}
-    .status{
-      display:flex;gap:8px;align-items:center;
-      background:var(--glass);padding:8px;border-radius:12px;font-size:14px;color:var(--muted);
-    }
-    .status .time{font-weight:700;color:var(--text)}
-    .status .score{font-weight:800;color:var(--accent)}
-    .question-area{margin-top:12px;}
-    .qhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
-    .qnum{font-size:15px;color:var(--muted)}
-    .qtext{font-size:18px;font-weight:700}
-    .options{display:grid;grid-template-columns:1fr;gap:10px}
-    .opt{
-      background:linear-gradient(180deg,rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-      border-radius:10px;padding:12px;border:1px solid rgba(255,255,255,0.04);
-      cursor:pointer;font-size:15px;color:var(--text);display:flex;align-items:center;gap:8px;
-      transition:all .18s;
-      user-select:none;
-    }
-    .opt:hover{transform:translateY(-3px)}
-    .opt.disabled{pointer-events:none;opacity:.95}
-    .opt.correct{background:linear-gradient(90deg, rgba(22,163,74,0.12), rgba(22,163,74,0.06));border-color:rgba(22,163,74,0.35)}
-    .opt.wrong{background:linear-gradient(90deg, rgba(239,68,68,0.08), rgba(239,68,68,0.02));border-color:rgba(239,68,68,0.28)}
-    .footer{display:flex;justify-content:space-between;align-items:center;margin-top:12px;gap:12px}
-    .prog{height:8px;background:rgba(255,255,255,0.04);border-radius:8px;overflow:hidden;flex:1}
-    .prog > i{display:block;height:100%;background:linear-gradient(90deg,var(--accent),#7ee7f8);width:0%}
-    .small{font-size:13px;color:var(--muted)}
-    /* responsive & mobile friendly */
-    @media (max-width:520px){
-      .title{font-size:17px}
-      .qtext{font-size:16px}
-      .wrap{padding:10px}
-    }
+}
   </style>
 </head>
 <body>
