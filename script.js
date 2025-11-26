@@ -1,0 +1,445 @@
+// প্রশ্ন ও উত্তর ডেটা
+const qa = [
+  { phrase: "অকাল কুস্মাণ্ড", meaning: "অপদার্থ" },
+  { phrase: "অমাবস্যার চাঁদ", meaning: "দুর্লভবস্তু" },
+  { phrase: "ডুমুরের ফুল", meaning: "দুর্লভবস্তু" },
+  { phrase: "অক্কা পাওয়া", meaning: "মারা যাওয়া" },
+  { phrase: "পটল তোলা", meaning: "মারা যাওয়া" },
+  { phrase: "অথৈ জলে পড়া", meaning: "মহাবিপদ" },
+  { phrase: "অকূল পাথার", meaning: "মহাবিপদ" },
+  { phrase: "অগাধ জলের মাছ", meaning: "সুচতুর ব্যক্তি" },
+  { phrase: "অহিনকুল", meaning: "শত্রু সম্পর্ক" },
+  { phrase: "সাপে-নেউলে", meaning: "শত্রু সম্পর্ক" },
+  { phrase: "দা-কুমড়া সম্পর্ক", meaning: "শত্রু সম্পর্ক" },
+  { phrase: "অন্ধের যষ্টি", meaning: "একমাত্র অবলম্বন" },
+  { phrase: "শিবরাত্রির সলতে", meaning: "একমাত্র সন্তান" },
+  { phrase: "অরণ্যে রোদন", meaning: "বৃথা চেষ্টা" },
+  { phrase: "অগ্নি শর্মা", meaning: "অত্যন্ত ক্রুদ্ধ" },
+  { phrase: "অগ্নিপরীক্ষা", meaning: "কঠিন পরীক্ষা" },
+  { phrase: "অন্ধকারে ঢিল মারা", meaning: "আন্দাজে কাজ করা" },
+  { phrase: "অনুরোধে ঢেঁকি গেলা", meaning: "অনুরোধে দুরূহ কাজ করা" },
+  { phrase: "অল্পবিদ্যা ভয়ংকরী", meaning: "অল্প বিদ্যার অহংকার" },
+  { phrase: "অন্তর টিপুনী", meaning: "মর্ম পীড়াদায়ক খোচাঁ" },
+  { phrase: "অঘটনঘটন পটিয়সী", meaning: "অসাধারণ ক্ষমতা সম্পন্ন ব্যক্তি" },
+  { phrase: "আলাভোলা", meaning: "সাধাসিদে" },
+  { phrase: "আলাঝালা", meaning: "আদর" },
+  { phrase: "আকাশকুসুম", meaning: "অবাস্তব কল্পনা" },
+  { phrase: "আকাশপাতাল", meaning: "প্রচুর ব্যবধান" },
+  { phrase: "আক্কেল সেলামি", meaning: "নির্বুদ্ধিতার দণ্ড" },
+  { phrase: "আঙুল ফুলে কলাগাছ", meaning: "হঠাৎ বড়লোক হওয়া" },
+  { phrase: "আদায় কাঁচকলায়", meaning: "শত্রুতা" },
+  { phrase: "আদা জল খেয়ে লাগা", meaning: "উঠে পড়ে লাগা" },
+  { phrase: "আমড়া কাঠের ঢেঁকি", meaning: "অপদার্থ" },
+  { phrase: "আষাঢ়ে গল্প", meaning: "আজগুবি গল্প" },
+  { phrase: "অকালবোধন", meaning: "অসময়ে আবির্ভাব" },
+  { phrase: "অগস্ত্য যাত্রা", meaning: "চিরতরে গমন" },
+  { phrase: "অদৃষ্টের পরিহাস", meaning: "ভাগ্যের নিষ্ঠুরতা" },
+  { phrase: "অকাট মূর্খ", meaning: "জড় বুদ্ধি সম্পন্ন" },
+  { phrase: "অষ্টবজ্র সম্মিলন", meaning: "প্রতিভাবানদের সমাবেশ" },
+  { phrase: "অষ্টরম্ভা", meaning: "ফাঁকি" },
+  { phrase: "অন্ন ধ্বংস করা", meaning: "অপচয় করা" },
+  { phrase: "অক্ষয় বট", meaning: "প্রাচীন ব্যক্তি" },
+  { phrase: "আক্কেল গুড়ুম", meaning: "হতবুদ্ধি" },
+  { phrase: "আমতা-আমতা করা", meaning: "দ্বিধাবোধ করা" },
+  { phrase: "আঠারো মাসে বছর", meaning: "দীর্ঘসূত্রিতা" },
+  { phrase: "আদিখ্যেতা", meaning: "ন্যাকামি" },
+  { phrase: "আধা খেঁচড়া", meaning: "বিশৃঙ্খলা" },
+  { phrase: "আমড়া গাছি করা", meaning: "তোষামদো করা" },
+  { phrase: "ইঁদুর কপালে", meaning: "দুর্ভাগ্য" },
+  { phrase: "ইঁচড়ে পাকা", meaning: "অকালপক্ষ" },
+  { phrase: "ইতর বিশেষ", meaning: "পার্থক্য" },
+  { phrase: "ইলশে গুঁড়ি", meaning: "গুড়ি গুড়ি বৃষ্টি" },
+  { phrase: "উড়ো চিঠি", meaning: "বেনামি পত্র" },
+  { phrase: "উড়নচণ্ডী", meaning: "অমিতব্যায়ী" },
+  { phrase: "উলু বনে মুক্তা ছড়ানো", meaning: "অপাত্রে দান" },
+  { phrase: "উত্তম-মধ্যম", meaning: "প্রহার" },
+  { phrase: "ঊন পাঁজুরে", meaning: "দুর্বল" },
+  { phrase: "ঊনপঞ্চাশ বায়ু", meaning: "পাগলামি" },
+  { phrase: "এলাহি কাণ্ড", meaning: "বিরাট আয়োজন" },
+  { phrase: "এক চোখা", meaning: "পক্ষপাতীত্ব" },
+  { phrase: "এক হাত লওয়া", meaning: "জব্দ করা" },
+  { phrase: "একাদশে বৃহস্পতি", meaning: "সৌভাগ্যের বিষয়" },
+  { phrase: "এস্পার-ওস্পার", meaning: "মীমাংসা" },
+  { phrase: "এলোপাতাড়ি", meaning: "বিশৃঙ্খলা" },
+  { phrase: "কংস মামা", meaning: "নির্মম আত্মীয়" },
+  { phrase: "শকুনি মামা", meaning: "কু-পরামর্শদাতা" },
+  { phrase: "কুল কাঠের আগুন", meaning: "তীব্র যন্ত্রণা" },
+  { phrase: "কলমের খোঁচা", meaning: "ক্ষতি করার উদ্দেশ্যে লিখিত আদেশ" },
+  { phrase: "কাঁঠালের আমসত্ত্ব", meaning: "অসম্ভব বস্তু" },
+  { phrase: "কম্বলের লোম বাছা", meaning: "অকেজো কাজ করা" },
+  { phrase: "কেউকেটা", meaning: "সামান্য" },
+  { phrase: "কাক ভুষুণ্ডী", meaning: "দীর্ঘজীবী" },
+  { phrase: "কেবলা হাকিম", meaning: "অনভিজ্ঞ" },
+  { phrase: "কাকতালীয়", meaning: "আকস্মিক যোগাযোগের ঘটনা" },
+  { phrase: "কেঁচে গুন্ডুষ", meaning: "পুনরায় আরম্ভ" },
+  { phrase: "কাঁচা ঢিলা", meaning: "অসাবধান" },
+  { phrase: "কাঠের পুতুল", meaning: "নির্জীব" },
+  { phrase: "কেতা দুরস্ত", meaning: "পরিপাটি" },
+  { phrase: "কূপমণ্ডুক", meaning: "সীমাবদ্ধ জ্ঞান সম্পন্ন" },
+  { phrase: "কলুর বলদ", meaning: "পরাধীন" },
+  { phrase: "খাঁদা নাকে তিলক", meaning: "অশোভন সাজ" },
+  { phrase: "খোদার খাসি", meaning: "হৃষ্টপুষ্ট" },
+  { phrase: "খুঁটে-খাওয়া", meaning: "স্বাবলম্বী হওয়া" },
+  { phrase: "খণ্ড প্রলয়", meaning: "তুমুল কান্ড" },
+  { phrase: "গড্ডলিকা প্রবাহ", meaning: "অন্ধ অনুকরণ" },
+  { phrase: "গণেশ উল্টানো", meaning: "ফেলমারা" },
+  { phrase: "গলগ্রহ", meaning: "পরের বোঝা স্বরূপ থাকা" },
+  { phrase: "গোয়াঁর গোবিন্দ", meaning: "নির্বোধ" },
+  { phrase: "ঘর থাকতে বাবুই ভেজা", meaning: "সুযোগ থাকতে নষ্ট" },
+  { phrase: "গোবর গনেশ", meaning: "মূর্খ" },
+  { phrase: "গুড়ে বালি", meaning: "আশায় নৈরাশ্য" },
+  { phrase: "গোকুলের ষাঁড়", meaning: "স্বেচ্ছাচারী" },
+  { phrase: "গোঁফ খেজুরে", meaning: "নিতান্ত অলস" },
+  { phrase: "ঘটিরাম", meaning: "অকেজো" },
+  { phrase: "ঘাটের মরা", meaning: "অতি বৃদ্ধ" },
+  { phrase: "ঘোড়া রোগ", meaning: "সাধ্যের অতিরিক্ত সাধ" },
+  { phrase: "চক্ষুদান করা", meaning: "চুরি করা" },
+  { phrase: "চাঁদের হাট", meaning: "আনন্দের প্রাচুর্য" },
+  { phrase: "চিনির বলদ", meaning: "ভারবাহী কিন্তু ফল লাভের অংশীদার নয়" },
+  { phrase: "চোখের বালি", meaning: "চক্ষুশূল" },
+  { phrase: "চুনোপুটি", meaning: "নগণ্য" },
+  { phrase: "চিনির পুতুল", meaning: "শ্রম কাতর" },
+  { phrase: "চশম খোর", meaning: "চক্ষু লজ্জাহীন" },
+  { phrase: "ছা পোষা", meaning: "অত্যন্ত গরিব" },
+  { phrase: "ছ কড়া ন কড়া", meaning: "অবহেলা করা" },
+  { phrase: "ছাই চাপা আগুন", meaning: "প্রচ্ছন্ন যোগ্যতা" },
+  { phrase: "ছেঁড়া চুলে খোঁপা বাঁধা", meaning: "বৃথা চেষ্টা" },
+  { phrase: "জিলাপির প্যাচ", meaning: "জটিলতা" },
+  { phrase: "জলাঞ্জলি দেওয়া", meaning: "বিসর্জন দেওয়া" },
+  { phrase: "জলবৎ তরলং", meaning: "অতি সরল" },
+  { phrase: "জগদ্দল পাথর", meaning: "গুরুভার" },
+  { phrase: "ঝাঁকের কই", meaning: "একই গোত্রের" },
+  { phrase: "ঝোলের লাউ অম্বলের কদু", meaning: "সব পক্ষের মন জুগিয়ে চলা" },
+  { phrase: "ঝড়ো কাক", meaning: "বিপর্যস্ত" },
+  { phrase: "টনক নড়া", meaning: "সজাগ হওয়া" },
+  { phrase: "ঠাট বজায় রাখা", meaning: "অভাব চাপা রাখা" },
+  { phrase: "ঠোঁট কাটা", meaning: "বেহায়া" },
+  { phrase: "ঠেলার নাম বাবাজি", meaning: "চাপে পড়ে কাবু হওয়া" },
+  { phrase: "ঠারে ঠারে", meaning: "ইঙ্গিতে" },
+  { phrase: "ঢাক ঢাক গুড় গুড়", meaning: "অকর্মন্য" },
+  { phrase: "ঠুঁটো জগন্নাথ", meaning: "গোপন রাখার চেষ্টা" },
+  { phrase: "ঢাকের কাঠি", meaning: "তোষামোদকারী" },
+  { phrase: "টি টি পড়া", meaning: "দুর্নাম রটনা" },
+  { phrase: "টিাঁকে গোঁজা", meaning: "পকেট ভারী করা" },
+  { phrase: "ঢেকির কচকচি", meaning: "বিরক্তিকর অবস্থা" },
+  { phrase: "ঢিমে তেতালা", meaning: "মন্থর" },
+  { phrase: "তাসের ঘর", meaning: "ক্ষনস্থায়ী বস্তু" },
+  { phrase: "তামার বিষ", meaning: "অর্থের কু প্রভাব" },
+  { phrase: "তালপাতার সেপাই", meaning: "দুর্বলদেহী" },
+  { phrase: "তীর্থের কাক", meaning: "সাহায্যের প্রত্যাশী" },
+  { phrase: "ত্রিশঙ্কু দশা", meaning: "অনিশ্চয়তায় ভোগা" },
+  { phrase: "তাইরে নাইরে", meaning: "বৃথা সময় নষ্ট" },
+  { phrase: "তুলসী বনের বাঘ", meaning: "ভন্ড" },
+  { phrase: "দহরম মহরম", meaning: "ঘনিষ্ঠ সম্পর্ক" },
+  { phrase: "দুধের মাছি/শরতের শিশির", meaning: "সুসময়ের বন্ধু" },
+  { phrase: "দাসখত লিখে যাওয়া", meaning: "একান্ত আনুগত্য স্বীকার করা" },
+  { phrase: "দিবা স্বপ্ন", meaning: "অলীক কল্পনা" },
+  { phrase: "দাঁও মারা", meaning: "সুবিধা লাভ" },
+  { phrase: "ধামা ধরা", meaning: "তোষামুদে" },
+  { phrase: "ধর্মপুত্র যুধিষ্ঠির", meaning: "অত্যন্ত ধার্মিক" },
+  { phrase: "ধর্মের কল বাতাসে নড়ে", meaning: "সত্য গোপন থাকে না" },
+  { phrase: "ধোপে টেকা", meaning: "যুক্তি গ্রাহ্য হওয়া" },
+  { phrase: "ধড়ে প্রাণ আসা", meaning: "বিপদ থেকে উদ্ধার হওয়া" },
+  { phrase: "নিরানবইয়ের ধাক্কা", meaning: "মুমূর্ষু অবস্থা" },
+  { phrase: "ননির পুতুল", meaning: "শ্রমবিমুখ" },
+  { phrase: "নয়-ছয়", meaning: "বিশৃঙ্খল" },
+  { phrase: "নেই আঁকড়া", meaning: "একগুঁয়ে" },
+  { phrase: "নাড়ি নক্ষত্র জানা", meaning: "সমস্ত কিছু জানা" },
+  { phrase: "নাটের গুরু", meaning: "মূলনায়ক" },
+  { phrase: "পালের গোদা", meaning: "দলপতি" },
+  { phrase: "পুকুর চুরি", meaning: "বড় রকমের চুরি" },
+  { phrase: "পোয়াবারো", meaning: "আশাতীত সৌভাগ্য" },
+  { phrase: "পাথরে পাঁচকিল", meaning: "প্রবল সৌভাগ্য" },
+  { phrase: "পায়াভারি", meaning: "অহংকারী" },
+  { phrase: "পগারপার", meaning: "পলায়ন করা" },
+  { phrase: "পঞ্চমুখ", meaning: "প্রশংসামুখর হওয়া" },
+  { phrase: "পদ্ম পাতার জল", meaning: "ক্ষনস্থায়ী" },
+  { phrase: "পটের বিবি", meaning: "সুসজ্জিত" },
+  { phrase: "পিন্ডি রক্ষা", meaning: "কিঞ্চিৎ প্রাপ্তি" },
+  { phrase: "ফফর দালালি", meaning: "অতিরিক্ত চালবাজি" },
+  { phrase: "ফোড়ন দেওয়া", meaning: "টিপ্পনী কাটা" },
+  { phrase: "ফেউ লাগা", meaning: "পিছনে থেকে ক্রমাগত বিরক্ত করা" },
+  { phrase: "ফাঁপা ঢেঁকি", meaning: "সামর্থ্যহীন" },
+  { phrase: "ফুলবাবু", meaning: "বিলাসী" },
+  { phrase: "ফুলটুসি", meaning: "সহজে আহতবোধ করে যে" },
+  { phrase: "ফতো নবাব", meaning: "সম্বলহীন বড়লোক" },
+  { phrase: "বক ধার্মিক/ বিড়াল তপস্বী", meaning: "ভন্ড সাধু" },
+  { phrase: "বর্ণচোরা আম", meaning: "কপট ব্যক্তি" },
+  { phrase: "বালির বাঁধ", meaning: "অস্থায়ী" },
+  { phrase: "বাঘের দুধ/চোখ", meaning: "দুঃসাধ্য বস্তু" },
+  { phrase: "বুদ্ধির ঢেঁকি", meaning: "নিরেট মূর্খ" },
+  { phrase: "ব্যাঙের আধুলি", meaning: "সামান্য সম্পদ" },
+  { phrase: "ব্যাঙের সর্দি", meaning: "অসম্ভব ঘটনা" },
+  { phrase: "বসন্তের কোকিল", meaning: "সুসময়ের বন্ধু" },
+  { phrase: "বজ্র আঁটুনি ফস্কা গেরো", meaning: "অসার আস্ফালন" },
+  { phrase: "বিড়ালের গলায় ঘণ্টা বাঁধা", meaning: "অসাধ্য সাধন করা" },
+  { phrase: "বাঘের মাসি", meaning: "নির্ভীক" },
+  { phrase: "ভরাডুবি", meaning: "সর্বনাশ" },
+  { phrase: "ভিজে বিড়াল", meaning: "কপটচারী" },
+  { phrase: "ভূশন্ডির কাক", meaning: "দীর্ঘজীবী" },
+  { phrase: "ভূঁইফোড়", meaning: "অর্বাচীন" },
+  { phrase: "ভেরেন্ডা ভাজা", meaning: "বেকার জীবন যাপন করা" },
+  { phrase: "মগের মুল্লুক", meaning: "অরাজক দেশ" },
+  { phrase: "মনিকাঞ্চন যোগ", meaning: "উপযুক্তমিলন" },
+  { phrase: "মন না মতি", meaning: "অস্থির মানব মন" },
+  { phrase: "মাছের মায়ের পুত্রশোক", meaning: "কপট বেদনাবোধ" },
+  { phrase: "মিছরির ছুরি", meaning: "মুখে মধু অন্তরে বিষ" },
+  { phrase: "মরণ কামড়", meaning: "প্রাণের বিনিময়ে ক্ষতি করার চেষ্টা" },
+  { phrase: "মেনি মুখো", meaning: "লাজুক" },
+  { phrase: "মাকাল ফল", meaning: "অন্তঃসার শূন্য" },
+  { phrase: "মুশকিল আসান", meaning: "নিষ্কৃতি" },
+  { phrase: "মুখে ফুল চন্দন পড়া", meaning: "শুভ সংবাদের জন্য ধন্যবাদ" },
+  { phrase: "যক্ষের ধন", meaning: "কৃপণের কড়ি" },
+  { phrase: "যমের অরুচি", meaning: "যা সহজে মরে না" },
+  { phrase: "যমের দোসর", meaning: "ভয়ানক লোক" },
+  { phrase: "যমের ভুল", meaning: "যার মরণ হয় না" },
+  { phrase: "রজ্জুতে সর্পজ্ঞান", meaning: "বিভ্রম" },
+  { phrase: "রাঘব বোয়াল", meaning: "সর্বগ্রাসী ক্ষমতাসীন ব্যক্তি" },
+  { phrase: "রাবণের চিতা", meaning: "চির অশান্তি" },
+  { phrase: "রাশভারি", meaning: "গম্ভীর প্রকৃতির" },
+  { phrase: "রুই-কাতলা", meaning: "নেতৃস্থানীয় ব্যক্তি" },
+  { phrase: "রগচটা", meaning: "অল্পতেই রাগে যে" },
+  { phrase: "রাজযোটক", meaning: "চমৎকার মিল" },
+  { phrase: "রাশ আলগা করা", meaning: "শাসন না করা" },
+  { phrase: "রাই কুড়িয়ে বেল", meaning: "ক্ষুদ্র সঞ্চয়ে বৃহৎ" },
+  { phrase: "রাজা উজীর মারা", meaning: "আড়ম্বরপূর্ণ গালগল্প" },
+  { phrase: "লেফাফাদুরস্ত", meaning: "বাইরের ঠাট বজায় রেখে চলেন যিনি" },
+  { phrase: "লগম চাপ", meaning: "লাগামবান" },
+  { phrase: "শাখের করাত", meaning: "উভয় সংকট" },
+  { phrase: "শাপে বর", meaning: "অনিষ্টে ইষ্ট লাভ" },
+  { phrase: "শিরে সংক্রান্তি", meaning: "বিপদ অতি নিকটে" },
+  { phrase: "সোনায় সোহাগা", meaning: "চমৎকার মিলন" },
+  { phrase: "সাক্ষী গোপাল", meaning: "নিষ্ক্রিয় দর্শক" },
+  { phrase: "সরফরাজি করা", meaning: "অযোগ্য ব্যক্তির চালাকি" },
+  { phrase: "হাঁটে হাঁড়ি ভাঙা", meaning: "গোপন কথা প্রকাশ করা" },
+  { phrase: "হাতটান", meaning: "চুরির অভ্যাস" },
+  { phrase: "হাড়ে হানতে", meaning: "হতভাগ্য" },
+  { phrase: "হালে পানি পাওয়া", meaning: "সুবিধা করা" },
+  { phrase: "হচ্ছে হবে", meaning: "দীর্ঘসূত্রিতা" },
+  { phrase: "হরি ঘোষের গোয়াল", meaning: "বহু অপদার্থের সমাবেশ" },
+  { phrase: "অপোগন্ড", meaning: "অকর্মণ্য" },
+  { phrase: "আঠার ধরে বেড়ানো", meaning: "ব্যক্তিত্বহীন" },
+  { phrase: "ইতলুনি কুঁড়ুলে", meaning: "অলস" },
+  { phrase: "ওয়ার হাতে ভূত", meaning: "বিপদগ্রস্ত কাণ্ডারী" },
+  { phrase: "কচুপোকা কামড়", meaning: "যা সহজে ছাড়ে না" },
+  { phrase: "কাজলে বাঘ", meaning: "মিথ্যা ভয়" },
+  { phrase: "খেজুরে আলাপ", meaning: "অকাজের কথা" },
+  { phrase: "ক্ষুর ধারানো", meaning: "সর্বনাশ করা" },
+  { phrase: "হাল যার না বয় সেও তোতায়", meaning: "কাজকাজে পটু" },
+  { phrase: "চিত্রগুপ্তের খাতা", meaning: "যে খাতায় সব কিছু পাওয়া যায়" },
+  { phrase: "জুতো সেলাই থেকে চণ্ডীপাঠ", meaning: "ছোট বড় সব কাজ" },
+  { phrase: "তেল-নুন- লকরি", meaning: "মৌলিক প্রয়োজন" },
+  { phrase: "দাঁড়ি কাকের মুখে পুঁছ", meaning: "অনুকরণে হাসার চেষ্টা" },
+  { phrase: "আসলে মূল নেই, ঠেকিয়েছে চাঁদোয়া", meaning: "ঠিকমত ব্যবস্থা গ্রহণের অভাব" },
+  { phrase: "কানু বনের কালাচাঁদ", meaning: "অপদার্থ" },
+  { phrase: "গর্দভ রাগিণী", meaning: "নিরেট মূর্খ ব্যক্তির বেসুরো গান" },
+  { phrase: "হিঁচে বিপরীয়", meaning: "উল্টো ফল" },
+  { phrase: "মানসনায়ে", meaning: "অরাজকতা" },
+  { phrase: "বিদুরের খুদ", meaning: "গরিব ভক্তের সামান্য উপহার" },
+  { phrase: "ডাকাবুকো", meaning: "দূরত" },
+  { phrase: "চিঁচিং ফাঁক", meaning: "গুপ্ত মন্ত্র প্রকাশ" },
+  { phrase: "কাঁটা বনে দুগ্ধ ধারা", meaning: "অপ্রাপ্ত বয়সে বিপজ্জন" },
+  { phrase: "আঁচের গোছানো", meaning: "ভবিষ্যতের ব্যবস্থা" }
+];
+
+    // extract all meanings pool (unique)
+    const meaningsPool = Array.from(new Set(qa.map(x=>x.meaning)));
+
+    // UI elements
+    const startBtn = document.getElementById('startBtn');
+    const restartBtn = document.getElementById('restartBtn');
+    const timerEl = document.getElementById('timer');
+    const scoreEl = document.getElementById('score');
+    const qtext = document.getElementById('qtext');
+    const qnum = document.getElementById('qnum');
+    const optionsEl = document.getElementById('options');
+    const quizEl = document.getElementById('quiz');
+    const progBar = document.getElementById('progBar');
+    const qprogress = document.getElementById('qprogress');
+    const correctCountEl = document.getElementById('correctCount');
+    const wrongCountEl = document.getElementById('wrongCount');
+    const endScreen = document.getElementById('endScreen');
+    const finalScore = document.getElementById('finalScore');
+    const finalTime = document.getElementById('finalTime');
+
+    let shuffledQuestions = [];
+    let idx = 0;
+    let score = 0;
+    let correctCount = 0;
+    let wrongCount = 0;
+    let elapsed = 0;
+    let timerInterval = null;
+    let started = false;
+
+    function formatTime(s){
+      const mm = String(Math.floor(s/60)).padStart(2,'0');
+      const ss = String(s%60).padStart(2,'0');
+      return mm+':'+ss;
+    }
+
+    function startTimer(){
+      elapsed = 0;
+      timerEl.textContent = formatTime(elapsed);
+      timerInterval = setInterval(()=>{
+        elapsed++;
+        timerEl.textContent = formatTime(elapsed);
+      },1000);
+    }
+    function stopTimer(){
+      if(timerInterval) clearInterval(timerInterval);
+      timerInterval = null;
+    }
+
+    function shuffle(a){
+      for(let i=a.length-1;i>0;i--){
+        const j = Math.floor(Math.random()*(i+1));
+        [a[i],a[j]]=[a[j],a[i]];
+      }
+      return a;
+    }
+
+    function buildQuestions(){
+      // clone and shuffle the order of items but keep mapping
+      shuffledQuestions = shuffle(qa.map(x=>({...x})));
+      idx = 0;
+      score = 0;
+      correctCount = 0;
+      wrongCount = 0;
+      updateScoreUI();
+      updateCounts();
+      progBar.style.width = '0%';
+    }
+
+    function updateScoreUI(){
+      scoreEl.textContent = `${score} / ${qa.length}`;
+      document.getElementById('qprogress').textContent = `প্রশ্ন: ${Math.min(idx+1, qa.length)} / ${qa.length}`;
+    }
+    function updateCounts(){
+      correctCountEl.textContent = correctCount;
+      wrongCountEl.textContent = wrongCount;
+    }
+
+    function renderQuestion(){
+      if(idx >= shuffledQuestions.length){
+        finishQuiz();
+        return;
+      }
+      const cur = shuffledQuestions[idx];
+      qnum.textContent = `প্রশ্ন ${idx+1}`;
+      qtext.textContent = `${cur.phrase} — এর অর্থ কি?`;
+      // build options: correct + 3 random distinct wrongs
+      const wrongs = meaningsPool.filter(m=>m !== cur.meaning);
+      shuffle(wrongs);
+      const opts = [cur.meaning, wrongs[0], wrongs[1] || wrongs[0], wrongs[2] || wrongs[0]].slice(0,4);
+      shuffle(opts);
+      optionsEl.innerHTML = '';
+      opts.forEach(optText=>{
+        const btn = document.createElement('button');
+        btn.className = 'opt';
+        btn.type = 'button';
+        btn.innerHTML = `<span style="flex:1">${optText}</span>`;
+        btn.addEventListener('click', ()=> handleSelect(btn, optText, cur.meaning));
+        optionsEl.appendChild(btn);
+      });
+      // progress bar
+      const perc = Math.round((idx/qa.length)*100);
+      progBar.style.width = perc+'%';
+      qprogress.textContent = `প্রশ্ন: ${idx+1} / ${qa.length}`;
+      updateScoreUI();
+    }
+
+    function handleSelect(buttonEl, chosen, correct){
+      // disable all options
+      const all = Array.from(optionsEl.querySelectorAll('.opt'));
+      all.forEach(b=>b.classList.add('disabled'));
+      // mark chosen and correct
+      if(chosen === correct){
+        buttonEl.classList.add('correct');
+        score += 1;
+        correctCount += 1;
+      } else {
+        buttonEl.classList.add('wrong');
+        // highlight correct option
+        const correctBtn = all.find(b=>b.textContent.trim() === correct);
+        if(correctBtn) correctBtn.classList.add('correct');
+        wrongCount += 1;
+      }
+      updateCounts();
+      updateScoreUI();
+      // small delay then next question
+      setTimeout(()=>{
+        idx++;
+        renderQuestion();
+      }, 700);
+    }
+
+    function finishQuiz(){
+      stopTimer();
+      quizEl.style.display = 'none';
+      endScreen.style.display = 'block';
+      finalScore.textContent = `আপনি পেয়েছেন ${score} / ${qa.length}`;
+      finalTime.textContent = `সময়: ${formatTime(elapsed)}`;
+      restartBtn.style.display = 'inline-block';
+      startBtn.style.display = 'none';
+      progBar.style.width = '100%';
+    }
+
+    startBtn.addEventListener('click', ()=>{
+      if(!started){
+        started = true;
+        buildQuestions();
+        renderQuestion();
+        quizEl.style.display = 'block';
+        endScreen.style.display = 'none';
+        startTimer();
+        startBtn.style.display = 'none';
+        restartBtn.style.display = 'none';
+      }
+    });
+
+    restartBtn.addEventListener('click', ()=>{
+      stopTimer();
+      started = false;
+      startBtn.style.display = 'inline-block';
+      restartBtn.style.display = 'none';
+      quizEl.style.display = 'none';
+      endScreen.style.display = 'none';
+      timerEl.textContent = '00:00';
+      scoreEl.textContent = `0 / ${qa.length}`;
+      correctCountEl.textContent = '0';
+      wrongCountEl.textContent = '0';
+      progBar.style.width = '0%';
+    });
+
+    // small enhancement: if quiz ends, show restart to retake
+    // Show restart when endScreen visible
+    document.addEventListener('click', function(e){
+      if(restartBtn && restartBtn.style.display !== 'none'){
+        // no-op
+      }
+    });
+
+    // expose a restart when quiz ended
+    restartBtn.addEventListener('click', ()=>{
+      // reload state to start anew
+      started = false;
+      stopTimer();
+      timerEl.textContent = '00:00';
+      score = 0;
+      correctCount = 0;
+      wrongCount = 0;
+      idx = 0;
+      buildQuestions();
+      quizEl.style.display = 'none';
+      endScreen.style.display = 'none';
+      startBtn.style.display = 'inline-block';
+      restartBtn.style.display = 'none';
+    });
+
+    // allow quick restart from end screen: clicking restartBtn will be visible then
+    // Show restartBtn after finish
+    // For clarity, show restartBtn when quiz finished
+    const origFinish = finishQuiz;
+    // (already sets restartBtn visible)
+
+    // preload font fallback (optional)
