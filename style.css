@@ -1,1 +1,188 @@
+/* General body styling */
+body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+    color: #333;
+}
 
+/* Container for the quiz */
+.quiz-container {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 24px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1), 0 15px 15px rgba(0, 0, 0, 0.05);
+    padding: 40px 50px;
+    max-width: 750px;
+    width: 90%;
+    margin-top: 40px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Heading */
+.quiz-container h1 {
+    text-align: center;
+    font-weight: 800;
+    margin-bottom: 35px;
+    color: #2d3748;
+    font-size: 2.5rem;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: -0.5px;
+}
+
+/* Timer and Marks container */
+.top-info {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 30px;
+    gap: 20px;
+}
+
+.top-info div {
+    background: linear-gradient(145deg, #ffffff, #f0f0f0);
+    padding: 15px 25px;
+    border-radius: 16px;
+    box-shadow: 8px 8px 16px #d9d9d9, -8px -8px 16px #ffffff;
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: #4a5568;
+    flex: 1;
+    text-align: center;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+.top-info div:hover {
+    transform: translateY(-3px);
+    box-shadow: 12px 12px 24px #d1d1d1, -12px -12px 24px #ffffff;
+}
+
+/* Question Box */
+.question-box {
+    background: linear-gradient(145deg, #f8f9fa, #e9ecef);
+    padding: 25px 30px;
+    border-radius: 18px;
+    margin-bottom: 25px;
+    box-shadow: inset 3px 3px 6px #d1d1d1, inset -3px -3px 6px #ffffff;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #2d3748;
+    line-height: 1.5;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+/* Options Buttons */
+.options button {
+    display: block;
+    width: 100%;
+    padding: 16px 25px;
+    margin: 12px 0;
+    border: none;
+    border-radius: 14px;
+    background: linear-gradient(145deg, #ffffff, #f0f0f0);
+    box-shadow: 6px 6px 12px #d9d9d9, -6px -6px 12px #ffffff;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    color: #4a5568;
+    text-align: left;
+    position: relative;
+    overflow: hidden;
+}
+
+.options button:hover {
+    transform: translateY(-4px);
+    box-shadow: 10px 10px 20px #d1d1d1, -10px -10px 20px #ffffff;
+    color: #667eea;
+}
+
+.options button:active {
+    transform: translateY(-1px);
+    box-shadow: 4px 4px 8px #d1d1d1, -4px -4px 8px #ffffff;
+}
+
+/* Correct & Wrong Option styles */
+.correct {
+    background: linear-gradient(145deg, #48bb78, #38a169) !important;
+    color: white !important;
+    box-shadow: 6px 6px 12px #c6f6d5, -6px -6px 12px #68d391 !important;
+}
+
+.wrong {
+    background: linear-gradient(145deg, #f56565, #e53e3e) !important;
+    color: white !important;
+    box-shadow: 6px 6px 12px #fed7d7, -6px -6px 12px #fc8181 !important;
+}
+
+/* Start Button */
+.start-btn {
+    display: block;
+    margin: 0 auto 35px auto;
+    padding: 18px 45px;
+    border-radius: 50px;
+    border: none;
+    font-size: 1.3rem;
+    font-weight: 700;
+    cursor: pointer;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+    color: white;
+    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.start-btn:hover {
+    transform: translateY(-5px) scale(1.03);
+    box-shadow: 0 15px 30px rgba(102, 126, 234, 0.4);
+    letter-spacing: 0.5px;
+}
+
+.start-btn:active {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+}
+
+/* Responsive */
+@media screen and (max-width: 768px) {
+    body {
+        padding: 10px;
+    }
+    
+    .quiz-container {
+        padding: 25px 30px;
+        margin-top: 20px;
+    }
+
+    .quiz-container h1 {
+        font-size: 2rem;
+    }
+
+    .question-box {
+        font-size: 1.1rem;
+        padding: 20px;
+    }
+
+    .options button {
+        font-size: 1rem;
+        padding: 14px 20px;
+    }
+    
+    .top-info {
+        flex-direction: column;
+    }
+    
+    .start-btn {
+        padding: 16px 35px;
+        font-size: 1.2rem;
+    }
+}
