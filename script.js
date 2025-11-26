@@ -1,17 +1,11 @@
-// Sample JS structure (ফাংশন অপরিবর্তিত, শুধু design/UI update)
-// Example structure for quiz functionality
+ // --- No-copy & context menu protection ---
+    document.addEventListener('contextmenu', e => e.preventDefault());
+    document.addEventListener('copy', e => e.preventDefault());
+    document.addEventListener('cut', e => e.preventDefault());
+    document.addEventListener('selectstart', e => e.preventDefault());
 
-const startBtn = document.getElementById("start-btn");
-const questionBox = document.getElementById("question-box");
-const optionsBox = document.getElementById("options");
-const scoreBox = document.getElementById("score");
-const timerBox = document.getElementById("timer");
-
-let score = 0;
-let currentQuestion = 0;
-let timer;
-
-const question = [
+    // --- QA data ---
+const qa = [
   { phrase: "অকাল কুস্মাণ্ড", meaning: "অপদার্থ" },
   { phrase: "অমাবস্যার চাঁদ", meaning: "দুর্লভবস্তু" },
   { phrase: "ডুমুরের ফুল", meaning: "দুর্লভবস্তু" },
@@ -253,60 +247,158 @@ const question = [
   { phrase: "কাঁটা বনে দুগ্ধ ধারা", meaning: "অপ্রাপ্ত বয়সে বিপজ্জন" },
   { phrase: "আঁচের গোছানো", meaning: "ভবিষ্যতের ব্যবস্থা" }
 ];
+    const meaningsPool = Array.from(new Set(qa.map(x=>x.meaning)));
 
-function startQuiz() {
-    startBtn.style.display = "none";
-    currentQuestion = 0;
-    score = 0;
-    scoreBox.innerText = score;
-    showQuestion();
-    startTimer();
-}
+    // --- UI elements ---
+    const startBtn = document.getElementById('startBtn');
+    const restartBtn = document.getElementById('restartBtn');
+    const timerEl = document.getElementById('timer');
+    const scoreEl = document.getElementById('score');
+    const qtext = document.getElementById('qtext');
+    const qnum = document.getElementById('qnum');
+    const optionsEl = document.getElementById('options');
+    const quizEl = document.getElementById('quiz');
+    const progBar = document.getElementById('progBar');
+    const qprogress = document.getElementById('qprogress');
+    const correctCountEl = document.getElementById('correctCount');
+    const wrongCountEl = document.getElementById('wrongCount');
+    const endScreen = document.getElementById('endScreen');
+    const finalScore = document.getElementById('finalScore');
+    const finalTime = document.getElementById('finalTime');
 
-function startTimer() {
-    let time = 0;
-    timer = setInterval(() => {
-        time++;
-        let min = String(Math.floor(time / 60)).padStart(2, "0");
-        let sec = String(time % 60).padStart(2, "0");
-        timerBox.innerText = `${min}:${sec}`;
-    }, 1000);
-}
+    let shuffledQuestions = [];
+    let idx = 0;
+    let score = 0;
+    let correctCount = 0;
+    let wrongCount = 0;
+    let elapsed = 0;
+    let timerInterval = null;
+    let started = false;
 
-function showQuestion() {
-    const q = questions[currentQuestion];
-    questionBox.innerText = q.q;
-    optionsBox.innerHTML = "";
-    const opts = [q.a, "ভুল উত্তর 1", "ভুল উত্তর 2", "ভুল উত্তর 3"];
-    opts.sort(() => Math.random() - 0.5);
-    opts.forEach(opt => {
-        const btn = document.createElement("button");
-        btn.innerText = opt;
-        btn.onclick = () => checkAnswer(btn, q.a);
-        optionsBox.appendChild(btn);
-    });
-}
-
-function checkAnswer(btn, correct) {
-    if (btn.innerText === correct) {
-        btn.classList.add("correct");
-        score += 1;
-    } else {
-        btn.classList.add("wrong");
+    function formatTime(s){
+      const mm = String(Math.floor(s/60)).padStart(2,'0');
+      const ss = String(s%60).padStart(2,'0');
+      return mm+':'+ss;
     }
-    scoreBox.innerText = score;
-    setTimeout(() => {
-        currentQuestion++;
-        if (currentQuestion < questions.length) {
-            showQuestion();
-        } else {
-            clearInterval(timer);
-            questionBox.innerText = "Quiz শেষ!";
-            optionsBox.innerHTML = "";
-            startBtn.innerText = "পুনরায় শুরু করুন";
-            startBtn.style.display = "block";
+    function startTimer(){
+      elapsed = 0;
+      timerEl.textContent = formatTime(elapsed);
+      timerInterval = setInterval(()=>{
+        elapsed++;
+        timerEl.textContent = formatTime(elapsed);
+      },1000);
+    }
+    function stopTimer(){
+      if(timerInterval) clearInterval(timerInterval);
+      timerInterval = null;
+    }
+    function shuffle(a){
+      for(let i=a.length-1;i>0;i--){
+        const j = Math.floor(Math.random()*(i+1));
+        [a[i],a[j]]=[a[j],a[i]];
+      }
+      return a;
+    }
+    function buildQuestions(){
+      shuffledQuestions = shuffle(qa.map(x=>({...x})));
+      idx = 0;
+      score = 0;
+      correctCount = 0;
+      wrongCount = 0;
+      updateScoreUI();
+      updateCounts();
+      progBar.style.width = '0%';
+    }
+    function updateScoreUI(){
+      scoreEl.textContent = `${score} / ${qa.length}`;
+      qprogress.textContent = `প্রশ্ন: ${Math.min(idx+1, qa.length)} / ${qa.length}`;
+    }
+    function updateCounts(){
+      correctCountEl.textContent = correctCount;
+      wrongCountEl.textContent = wrongCount;
+    }
+    function renderQuestion(){
+      if(idx >= shuffledQuestions.length){
+        finishQuiz();
+        return;
+      }
+      const cur = shuffledQuestions[idx];
+      qnum.textContent = `প্রশ্ন ${idx+1}`;
+      qtext.textContent = `${cur.phrase} — এর অর্থ কি?`;
+      const wrongs = meaningsPool.filter(m=>m !== cur.meaning);
+      shuffle(wrongs);
+      const opts = [cur.meaning, wrongs[0], wrongs[1] || wrongs[0], wrongs[2] || wrongs[0]].slice(0,4);
+      shuffle(opts);
+      optionsEl.innerHTML = '';
+      opts.forEach(optText=>{
+        const btn = document.createElement('button');
+        btn.className = 'opt bg-gray-100 rounded-xl p-3 text-gray-800 flex items-center gap-2 shadow-neumorph hover:shadow-inner transition w-full';
+        btn.type = 'button';
+        btn.textContent = optText;
+        btn.addEventListener('click', ()=> handleSelect(btn, optText, cur.meaning));
+        optionsEl.appendChild(btn);
+      });
+      const perc = Math.round((idx/qa.length)*100);
+      progBar.style.width = perc+'%';
+      updateScoreUI();
+    }
+    function handleSelect(buttonEl, chosen, correct){
+      const all = Array.from(optionsEl.querySelectorAll('.opt'));
+      all.forEach(b=>b.disabled = true);
+      if(chosen === correct){
+        buttonEl.classList.remove('bg-gray-100','text-gray-800');
+        buttonEl.classList.add('bg-green-500','text-white');
+        score += 1;
+        correctCount += 1;
+      } else {
+        buttonEl.classList.remove('bg-gray-100','text-gray-800');
+        buttonEl.classList.add('bg-red-500','text-white');
+        const correctBtn = all.find(b=>b.textContent.trim() === correct);
+        if(correctBtn){
+          correctBtn.classList.remove('bg-gray-100','text-gray-800');
+          correctBtn.classList.add('bg-green-500','text-white');
         }
-    }, 800);
-}
-
-startBtn.addEventListener("click", startQuiz);
+        wrongCount += 1;
+      }
+      updateCounts();
+      updateScoreUI();
+      setTimeout(()=>{
+        idx++;
+        renderQuestion();
+      }, 700);
+    }
+    function finishQuiz(){
+      stopTimer();
+      quizEl.style.display = 'none';
+      endScreen.style.display = 'block';
+      finalScore.textContent = `আপনি পেয়েছেন ${score} / ${qa.length}`;
+      finalTime.textContent = `সময়: ${formatTime(elapsed)}`;
+      restartBtn.style.display = 'inline-block';
+      startBtn.style.display = 'none';
+      progBar.style.width = '100%';
+    }
+    startBtn.addEventListener('click', ()=>{
+      if(!started){
+        started = true;
+        buildQuestions();
+        renderQuestion();
+        quizEl.style.display = 'block';
+        endScreen.style.display = 'none';
+        startTimer();
+        startBtn.style.display = 'none';
+        restartBtn.style.display = 'none';
+      }
+    });
+    restartBtn.addEventListener('click', ()=>{
+      stopTimer();
+      started = false;
+      startBtn.style.display = 'inline-block';
+      restartBtn.style.display = 'none';
+      quizEl.style.display = 'none';
+      endScreen.style.display = 'none';
+      timerEl.textContent = '00:00';
+      scoreEl.textContent = `0 / ${qa.length}`;
+      correctCountEl.textContent = '0';
+      wrongCountEl.textContent = '0';
+      progBar.style.width = '0%';
+    });
