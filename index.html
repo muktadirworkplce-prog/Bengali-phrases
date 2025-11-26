@@ -1,53 +1,80 @@
+<!DOCTYPE html>
 <html lang="bn">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>বাগধারা MCQ টেস্ট</title>
- <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MCQ Quiz</title>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-  <div class="wrap">
-    <div class="header">
-      <div>
-        <div class="title">বাগধারা — MCQ টেস্ট</div>
-        <div class="small">প্রতিটি সঠিক উত্তর = ১ পয়েন্ট.</div>
-      </div>
-      <div class="meta">
-        <button id="startBtn" class="btn">Start</button>
-        <button id="restartBtn" class="btn ghost" style="display:none">Restart</button>
-      </div>
+<body class="bg-gray-200 flex justify-center items-start min-h-screen p-5 font-sans">
+
+    <div class="quiz-container bg-gray-200 rounded-3xl shadow-neumorph p-8 max-w-3xl w-full">
+
+        <!-- Heading -->
+        <h1 class="text-center text-3xl font-bold mb-6 text-gray-800">বাগধারা MCQ Quiz</h1>
+
+        <!-- Info + Score -->
+        <div class="flex justify-between items-center mb-6">
+            <!-- Score -->
+            <div class="score rounded-full w-20 h-20 flex items-center justify-center text-xl font-bold text-gray-800 bg-gray-200 shadow-neumorph">
+                0
+            </div>
+
+            <!-- Timer -->
+            <div class="top-info flex-1 ml-4 flex justify-end space-x-4">
+                <div class="timer px-5 py-3 rounded-2xl text-gray-800 font-semibold bg-gray-200 shadow-neumorph">
+                    00:00
+                </div>
+            </div>
+        </div>
+
+        <!-- Start Button -->
+        <div class="flex justify-center mb-6">
+            <button class="start-btn px-10 py-3 rounded-2xl text-gray-800 font-semibold bg-gray-200 shadow-neumorph hover:shadow-neumorph-inset transition-all">
+                শুরু করুন
+            </button>
+        </div>
+
+        <!-- Question Box -->
+        <div class="question-box bg-gray-200 rounded-2xl shadow-neumorph p-6 mb-4 text-gray-800 text-lg">
+            <!-- Question text populated by JS -->
+        </div>
+
+        <!-- Options -->
+        <div class="options space-y-3">
+            <button class="option-btn bg-gray-200 rounded-2xl shadow-neumorph w-full py-3 text-left px-4 hover:shadow-neumorph-inset transition-all">
+                Option 1
+            </button>
+            <button class="option-btn bg-gray-200 rounded-2xl shadow-neumorph w-full py-3 text-left px-4 hover:shadow-neumorph-inset transition-all">
+                Option 2
+            </button>
+            <button class="option-btn bg-gray-200 rounded-2xl shadow-neumorph w-full py-3 text-left px-4 hover:shadow-neumorph-inset transition-all">
+                Option 3
+            </button>
+            <button class="option-btn bg-gray-200 rounded-2xl shadow-neumorph w-full py-3 text-left px-4 hover:shadow-neumorph-inset transition-all">
+                Option 4
+            </button>
+        </div>
+
+        <!-- Next Button -->
+        <div class="flex justify-end mt-6">
+            <button class="next-btn px-8 py-3 rounded-2xl text-gray-800 font-semibold bg-gray-200 shadow-neumorph hover:shadow-neumorph-inset transition-all">
+                Next
+            </button>
+        </div>
+
     </div>
 
-    <div class="panel">
-      <div class="status">
-        <div>সময়: <span id="timer" class="time">00:00</span></div>
-        <div style="width:8px"></div>
-        <div>মার্কস: <span id="score" class="score">০ / ২৪০</span></div>
-        <div style="width:8px"></div>
-        <div class="small" id="qprogress">প্রশ্ন: ০ / ২৪০</div>
-      </div>
+    <style>
+        /* Neomorphic shadow styles */
+        .shadow-neumorph {
+            box-shadow: 8px 8px 15px #babecc, -8px -8px 15px #ffffff;
+        }
 
-      <div class="question-area" id="quiz" style="display:none">
-        <div class="qhead">
-          <div class="qnum" id="qnum">প্রশ্ন 1</div>
-          <div class="small" id="meaning-hint"></div>
-        </div>
-        <div class="qtext" id="qtext"></div>
+        .hover\:shadow-neumorph-inset:hover {
+            box-shadow: inset 5px 5px 10px #babecc, inset -5px -5px 10px #ffffff;
+        }
+    </style>
 
-        <div class="options" id="options"></div>
-
-        <div class="footer">
-          <div class="small">সঠিক: <span id="correctCount">0</span> | ভুল: <span id="wrongCount">0</span></div>
-          <div class="prog" title="progress"><i id="progBar"></i></div>
-        </div>
-      </div>
-
-      <div id="endScreen" style="display:none;margin-top:12px;text-align:center">
-        <div style="font-size:18px;font-weight:800" id="finalScore">আপনি পেয়েছেন 0 / 44</div>
-        <div class="small" style="margin-top:8px" id="finalTime">সময়: 00:00</div>
-      </div>
-    </div>
-  </div>
-<script src="script.js"></script>
 </body>
 </html>
