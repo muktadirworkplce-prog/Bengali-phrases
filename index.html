@@ -1,0 +1,362 @@
+<html lang="bn">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>বাগধারা MCQ টেস্ট</title>
+  <style>
+    :root{
+      --bg:#0f1724;
+      --card:#0b1220;
+      --accent:#06b6d4;
+      --text:#e6eef6;
+      --muted:#9fb0c0;
+      --correct:#16a34a;
+      --wrong:#ef4444;
+      --glass: rgba(255,255,255,0.03);
+      --radius:14px;
+    }
+    *{box-sizing:border-box;font-family: "Noto Sans Bengali", "Segoe UI", system-ui, Arial; }
+    html,body{height:100%;margin:0;background:linear-gradient(180deg,#071022 0%, #07172a 100%);color:var(--text);}
+    .wrap{max-width:900px;margin:18px auto;padding:16px;}
+    .header{
+      display:flex;gap:12px;align-items:center;justify-content:space-between;margin-bottom:12px;
+    }
+    .title{font-size:20px;font-weight:700;}
+    .meta{display:flex;gap:8px;align-items:center;}
+    .btn{
+      background:var(--accent);color:#022;border:none;padding:8px 12px;border-radius:10px;font-weight:700;
+      box-shadow:0 6px 18px rgba(6,182,212,0.12);cursor:pointer;
+    }
+    .btn.ghost{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--text);box-shadow:none}
+    .panel{background:var(--card);padding:14px;border-radius:var(--radius);box-shadow:0 6px 30px rgba(2,6,23,0.6)}
+    .status{
+      display:flex;gap:8px;align-items:center;
+      background:var(--glass);padding:8px;border-radius:12px;font-size:14px;color:var(--muted);
+    }
+    .status .time{font-weight:700;color:var(--text)}
+    .status .score{font-weight:800;color:var(--accent)}
+    .question-area{margin-top:12px;}
+    .qhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+    .qnum{font-size:15px;color:var(--muted)}
+    .qtext{font-size:18px;font-weight:700}
+    .options{display:grid;grid-template-columns:1fr;gap:10px}
+    .opt{
+      background:linear-gradient(180deg,rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius:10px;padding:12px;border:1px solid rgba(255,255,255,0.04);
+      cursor:pointer;font-size:15px;color:var(--text);display:flex;align-items:center;gap:8px;
+      transition:all .18s;
+      user-select:none;
+    }
+    .opt:hover{transform:translateY(-3px)}
+    .opt.disabled{pointer-events:none;opacity:.95}
+    .opt.correct{background:linear-gradient(90deg, rgba(22,163,74,0.12), rgba(22,163,74,0.06));border-color:rgba(22,163,74,0.35)}
+    .opt.wrong{background:linear-gradient(90deg, rgba(239,68,68,0.08), rgba(239,68,68,0.02));border-color:rgba(239,68,68,0.28)}
+    .footer{display:flex;justify-content:space-between;align-items:center;margin-top:12px;gap:12px}
+    .prog{height:8px;background:rgba(255,255,255,0.04);border-radius:8px;overflow:hidden;flex:1}
+    .prog > i{display:block;height:100%;background:linear-gradient(90deg,var(--accent),#7ee7f8);width:0%}
+    .small{font-size:13px;color:var(--muted)}
+    /* responsive & mobile friendly */
+    @media (max-width:520px){
+      .title{font-size:17px}
+      .qtext{font-size:16px}
+      .wrap{padding:10px}
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="header">
+      <div>
+        <div class="title">বাগধারা — MCQ টেস্ট (44টি প্রশ্ন)</div>
+        <div class="small">প্রতিটি সঠিক উত্তর = 1 পয়েন্ট। মোট = 44</div>
+      </div>
+      <div class="meta">
+        <button id="startBtn" class="btn">Start</button>
+        <button id="restartBtn" class="btn ghost" style="display:none">Restart</button>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="status">
+        <div>সময়: <span id="timer" class="time">00:00</span></div>
+        <div style="width:8px"></div>
+        <div>মার্কস: <span id="score" class="score">0 / 44</span></div>
+        <div style="width:8px"></div>
+        <div class="small" id="qprogress">প্রশ্ন: 0 / 44</div>
+      </div>
+
+      <div class="question-area" id="quiz" style="display:none">
+        <div class="qhead">
+          <div class="qnum" id="qnum">প্রশ্ন 1</div>
+          <div class="small" id="meaning-hint"></div>
+        </div>
+        <div class="qtext" id="qtext"></div>
+
+        <div class="options" id="options"></div>
+
+        <div class="footer">
+          <div class="small">সঠিক: <span id="correctCount">0</span> | ভুল: <span id="wrongCount">0</span></div>
+          <div class="prog" title="progress"><i id="progBar"></i></div>
+        </div>
+      </div>
+
+      <div id="endScreen" style="display:none;margin-top:12px;text-align:center">
+        <div style="font-size:18px;font-weight:800" id="finalScore">আপনি পেয়েছেন 0 / 44</div>
+        <div class="small" style="margin-top:8px" id="finalTime">সময়: 00:00</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // প্রশ্ন ও উত্তর ডেটা
+    const qa = [
+{phrase:'আকাল কুস্মান্ড', meaning:'অপদার্থ'},
+{phrase:'অমাবস্যার চাঁদ', meaning:'দুর্লভ বস্তু'},
+{phrase:'ডুমুরের ফুল', meaning:'দুর্লভ বস্তু'},
+{phrase:'অক্কা পাওয়া', meaning:'মারা যাওয়া'},
+{phrase:'পটল তোলা', meaning:'মারা যাওয়া'},
+{phrase:'অথৈ জলে পড়া', meaning:'মহাবিপদ'},
+{phrase:'অকূল পাথার', meaning:'মহাবিপদ'},
+{phrase:'অগাধ জলের মাছ', meaning:'সুচতুর ব্যক্তি'},
+{phrase:'অহিন কুল', meaning:'শত্রু সম্পর্ক'},
+{phrase:'সাপে নেউলে', meaning:'শত্রু সম্পর্ক'},
+{phrase:'দা-কুমড়া সম্পর্ক', meaning:'শত্রু সম্পর্ক'},
+{phrase:'অন্ধের যষ্টি', meaning:'একমাত্র অবলম্বন'},
+{phrase:'শিবরাত্রির সলতে', meaning:'একমাত্র সন্তান'},
+{phrase:'অরণ্যে রোদন', meaning:'বৃথা চেষ্টা'},
+{phrase:'অগ্নি শর্মা', meaning:'অত্যন্ত ক্রুদ্ধ'},
+{phrase:'অগ্নিপরীক্ষা', meaning:'কঠিন পরীক্ষা'},
+{phrase:'অন্ধকারে ঢিল মারা', meaning:'আন্দাজে কাজ করা'},
+{phrase:'অনুরোধে ঢেঁকি গেলা', meaning:'অনুরোধে দুরও কাজ করা'},
+{phrase:'অল্প বিদ্যা ভয়ংকরী', meaning:'অল্প বিদ্যার অহংকারী'},
+{phrase:'অন্তর টিপুনি', meaning:'মর্ম পীড়াদায় খোঁচা'},
+{phrase:'অঘটনঘটন পটিয়সী', meaning:'অসাধারণ ক্ষমতা সম্পন্ন ব্যক্তি'},
+{phrase:'আলাভোলা', meaning:'সাধাসিদে'},
+{phrase:'আলাজালা', meaning:'আদর'},
+{phrase:'আকাশ কুসুম', meaning:'অবাস্তব কল্পনা'},
+{phrase:'আকাশ পাতাল', meaning:'প্রচুর ব্যবধান'},
+{phrase:'আক্কেল সেলামি', meaning:'নির্বুদ্ধিতার দন্ড'},
+{phrase:'আঙ্গুল ফুলে কলা গাছ', meaning:'হঠাৎ বড়লোক হওয়া'},
+{phrase:'আদায় কাঁচকলায়', meaning:'শত্রুতা'},
+{phrase:'আদা জল খেয়ে লাগা', meaning:'উঠে পড়ে লাগ'},
+{phrase:'আমড়া কাঠের ঢেঁকি', meaning:'অপদার্থ'},
+{phrase:'আষাঢ়ে গল্প', meaning:'আজগুবি গল্প'},
+{phrase:'অকালবোধন', meaning:'অসময়ে আবির্ভাব'},
+{phrase:'অগ্যস্ত যাত্রা', meaning:'চিরতরে গমন'},
+{phrase:'অদৃষ্টের পরিহাস', meaning:'ভাগ্যের নিষ্ঠুরতা'},
+{phrase:'অকাট মূর্খ', meaning:'জড় বুদ্ধিসম্পন্ন'},
+{phrase:'অষ্টবজ্র সম্মিলন', meaning:'প্রতিভাবানদের সমাবেশ'},
+{phrase:'অষ্টরম্ভা', meaning:'ফাঁকি'},
+{phrase:'অন্ন ধ্বংস করা', meaning:'অপচয় করা'},
+{phrase:'অক্ষয় বট', meaning:'প্রাচীন ব্যক্তি'},
+{phrase:'আক্কেল গুড়ুম', meaning:'হত বুদ্ধি'},
+{phrase:'আমতা আমতা করা', meaning:'দ্বিধাবোধ করা'},
+{phrase:'১৮ মাসে বছর', meaning:'দীর্ঘ সূত্রিতা'},
+{phrase:'আদিখ্যেতা', meaning:'ন্যাকামি'},
+{phrase:'আধা খ্যাঁচড়া', meaning:'বিশৃঙ্খলা'}
+    ];
+
+    // extract all meanings pool (unique)
+    const meaningsPool = Array.from(new Set(qa.map(x=>x.meaning)));
+
+    // UI elements
+    const startBtn = document.getElementById('startBtn');
+    const restartBtn = document.getElementById('restartBtn');
+    const timerEl = document.getElementById('timer');
+    const scoreEl = document.getElementById('score');
+    const qtext = document.getElementById('qtext');
+    const qnum = document.getElementById('qnum');
+    const optionsEl = document.getElementById('options');
+    const quizEl = document.getElementById('quiz');
+    const progBar = document.getElementById('progBar');
+    const qprogress = document.getElementById('qprogress');
+    const correctCountEl = document.getElementById('correctCount');
+    const wrongCountEl = document.getElementById('wrongCount');
+    const endScreen = document.getElementById('endScreen');
+    const finalScore = document.getElementById('finalScore');
+    const finalTime = document.getElementById('finalTime');
+
+    let shuffledQuestions = [];
+    let idx = 0;
+    let score = 0;
+    let correctCount = 0;
+    let wrongCount = 0;
+    let elapsed = 0;
+    let timerInterval = null;
+    let started = false;
+
+    function formatTime(s){
+      const mm = String(Math.floor(s/60)).padStart(2,'0');
+      const ss = String(s%60).padStart(2,'0');
+      return mm+':'+ss;
+    }
+
+    function startTimer(){
+      elapsed = 0;
+      timerEl.textContent = formatTime(elapsed);
+      timerInterval = setInterval(()=>{
+        elapsed++;
+        timerEl.textContent = formatTime(elapsed);
+      },1000);
+    }
+    function stopTimer(){
+      if(timerInterval) clearInterval(timerInterval);
+      timerInterval = null;
+    }
+
+    function shuffle(a){
+      for(let i=a.length-1;i>0;i--){
+        const j = Math.floor(Math.random()*(i+1));
+        [a[i],a[j]]=[a[j],a[i]];
+      }
+      return a;
+    }
+
+    function buildQuestions(){
+      // clone and shuffle the order of items but keep mapping
+      shuffledQuestions = shuffle(qa.map(x=>({...x})));
+      idx = 0;
+      score = 0;
+      correctCount = 0;
+      wrongCount = 0;
+      updateScoreUI();
+      updateCounts();
+      progBar.style.width = '0%';
+    }
+
+    function updateScoreUI(){
+      scoreEl.textContent = `${score} / ${qa.length}`;
+      document.getElementById('qprogress').textContent = `প্রশ্ন: ${Math.min(idx+1, qa.length)} / ${qa.length}`;
+    }
+    function updateCounts(){
+      correctCountEl.textContent = correctCount;
+      wrongCountEl.textContent = wrongCount;
+    }
+
+    function renderQuestion(){
+      if(idx >= shuffledQuestions.length){
+        finishQuiz();
+        return;
+      }
+      const cur = shuffledQuestions[idx];
+      qnum.textContent = `প্রশ্ন ${idx+1}`;
+      qtext.textContent = `${cur.phrase} — এর অর্থ কি?`;
+      // build options: correct + 3 random distinct wrongs
+      const wrongs = meaningsPool.filter(m=>m !== cur.meaning);
+      shuffle(wrongs);
+      const opts = [cur.meaning, wrongs[0], wrongs[1] || wrongs[0], wrongs[2] || wrongs[0]].slice(0,4);
+      shuffle(opts);
+      optionsEl.innerHTML = '';
+      opts.forEach(optText=>{
+        const btn = document.createElement('button');
+        btn.className = 'opt';
+        btn.type = 'button';
+        btn.innerHTML = `<span style="flex:1">${optText}</span>`;
+        btn.addEventListener('click', ()=> handleSelect(btn, optText, cur.meaning));
+        optionsEl.appendChild(btn);
+      });
+      // progress bar
+      const perc = Math.round((idx/qa.length)*100);
+      progBar.style.width = perc+'%';
+      qprogress.textContent = `প্রশ্ন: ${idx+1} / ${qa.length}`;
+      updateScoreUI();
+    }
+
+    function handleSelect(buttonEl, chosen, correct){
+      // disable all options
+      const all = Array.from(optionsEl.querySelectorAll('.opt'));
+      all.forEach(b=>b.classList.add('disabled'));
+      // mark chosen and correct
+      if(chosen === correct){
+        buttonEl.classList.add('correct');
+        score += 1;
+        correctCount += 1;
+      } else {
+        buttonEl.classList.add('wrong');
+        // highlight correct option
+        const correctBtn = all.find(b=>b.textContent.trim() === correct);
+        if(correctBtn) correctBtn.classList.add('correct');
+        wrongCount += 1;
+      }
+      updateCounts();
+      updateScoreUI();
+      // small delay then next question
+      setTimeout(()=>{
+        idx++;
+        renderQuestion();
+      }, 700);
+    }
+
+    function finishQuiz(){
+      stopTimer();
+      quizEl.style.display = 'none';
+      endScreen.style.display = 'block';
+      finalScore.textContent = `আপনি পেয়েছেন ${score} / ${qa.length}`;
+      finalTime.textContent = `সময়: ${formatTime(elapsed)}`;
+      restartBtn.style.display = 'inline-block';
+      startBtn.style.display = 'none';
+      progBar.style.width = '100%';
+    }
+
+    startBtn.addEventListener('click', ()=>{
+      if(!started){
+        started = true;
+        buildQuestions();
+        renderQuestion();
+        quizEl.style.display = 'block';
+        endScreen.style.display = 'none';
+        startTimer();
+        startBtn.style.display = 'none';
+        restartBtn.style.display = 'none';
+      }
+    });
+
+    restartBtn.addEventListener('click', ()=>{
+      stopTimer();
+      started = false;
+      startBtn.style.display = 'inline-block';
+      restartBtn.style.display = 'none';
+      quizEl.style.display = 'none';
+      endScreen.style.display = 'none';
+      timerEl.textContent = '00:00';
+      scoreEl.textContent = `0 / ${qa.length}`;
+      correctCountEl.textContent = '0';
+      wrongCountEl.textContent = '0';
+      progBar.style.width = '0%';
+    });
+
+    // small enhancement: if quiz ends, show restart to retake
+    // Show restart when endScreen visible
+    document.addEventListener('click', function(e){
+      if(restartBtn && restartBtn.style.display !== 'none'){
+        // no-op
+      }
+    });
+
+    // expose a restart when quiz ended
+    restartBtn.addEventListener('click', ()=>{
+      // reload state to start anew
+      started = false;
+      stopTimer();
+      timerEl.textContent = '00:00';
+      score = 0;
+      correctCount = 0;
+      wrongCount = 0;
+      idx = 0;
+      buildQuestions();
+      quizEl.style.display = 'none';
+      endScreen.style.display = 'none';
+      startBtn.style.display = 'inline-block';
+      restartBtn.style.display = 'none';
+    });
+
+    // allow quick restart from end screen: clicking restartBtn will be visible then
+    // Show restartBtn after finish
+    // For clarity, show restartBtn when quiz finished
+    const origFinish = finishQuiz;
+    // (already sets restartBtn visible)
+
+    // preload font fallback (optional)
+  </script>
+</body>
+</html>
