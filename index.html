@@ -5,76 +5,44 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MCQ Quiz</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="style.css">
 </head>
-<body class="bg-gray-200 flex justify-center items-start min-h-screen p-5 font-sans">
+<body class="bg-gray-200 flex justify-center items-start min-h-screen p-4">
 
-    <div class="quiz-container bg-gray-200 rounded-3xl shadow-neumorph p-8 max-w-3xl w-full">
+    <div class="quiz-container bg-gray-200 rounded-3xl shadow-neu p-8 w-full max-w-3xl">
 
         <!-- Heading -->
-        <h1 class="text-center text-3xl font-bold mb-6 text-gray-800">বাগধারা MCQ Quiz</h1>
+        <h1 class="text-3xl font-bold text-center text-gray-700 mb-8">বাগধারা MCQ Quiz</h1>
 
-        <!-- Info + Score -->
+        <!-- Top Info -->
         <div class="flex justify-between items-center mb-6">
             <!-- Score -->
-            <div class="score rounded-full w-20 h-20 flex items-center justify-center text-xl font-bold text-gray-800 bg-gray-200 shadow-neumorph">
+            <div id="score" class="w-16 h-16 rounded-full flex items-center justify-center bg-gray-200 shadow-neu font-bold text-lg text-gray-700">
                 0
             </div>
-
             <!-- Timer -->
-            <div class="top-info flex-1 ml-4 flex justify-end space-x-4">
-                <div class="timer px-5 py-3 rounded-2xl text-gray-800 font-semibold bg-gray-200 shadow-neumorph">
-                    00:00
-                </div>
+            <div id="timer" class="px-6 py-3 rounded-xl bg-gray-200 shadow-neu font-semibold text-gray-700">
+                00:00
             </div>
-        </div>
-
-        <!-- Start Button -->
-        <div class="flex justify-center mb-6">
-            <button class="start-btn px-10 py-3 rounded-2xl text-gray-800 font-semibold bg-gray-200 shadow-neumorph hover:shadow-neumorph-inset transition-all">
-                শুরু করুন
-            </button>
         </div>
 
         <!-- Question Box -->
-        <div class="question-box bg-gray-200 rounded-2xl shadow-neumorph p-6 mb-4 text-gray-800 text-lg">
-            <!-- Question text populated by JS -->
+        <div id="question-box" class="bg-gray-200 rounded-2xl shadow-neu p-6 mb-6 text-gray-700 text-lg">
+            এখানে প্রশ্ন দেখাবে
         </div>
 
         <!-- Options -->
-        <div class="options space-y-3">
-            <button class="option-btn bg-gray-200 rounded-2xl shadow-neumorph w-full py-3 text-left px-4 hover:shadow-neumorph-inset transition-all">
-                Option 1
-            </button>
-            <button class="option-btn bg-gray-200 rounded-2xl shadow-neumorph w-full py-3 text-left px-4 hover:shadow-neumorph-inset transition-all">
-                Option 2
-            </button>
-            <button class="option-btn bg-gray-200 rounded-2xl shadow-neumorph w-full py-3 text-left px-4 hover:shadow-neumorph-inset transition-all">
-                Option 3
-            </button>
-            <button class="option-btn bg-gray-200 rounded-2xl shadow-neumorph w-full py-3 text-left px-4 hover:shadow-neumorph-inset transition-all">
-                Option 4
-            </button>
+        <div id="options" class="flex flex-col space-y-4">
+            <!-- Buttons dynamically populated by JS -->
         </div>
 
-        <!-- Next Button -->
-        <div class="flex justify-end mt-6">
-            <button class="next-btn px-8 py-3 rounded-2xl text-gray-800 font-semibold bg-gray-200 shadow-neumorph hover:shadow-neumorph-inset transition-all">
-                Next
-            </button>
-        </div>
+        <!-- Start / Next Button -->
+        <button id="start-btn" class="start-btn mt-8 mx-auto block px-8 py-3 rounded-2xl bg-gray-200 shadow-neu font-bold text-gray-700 hover:shadow-inner">
+            শুরু করুন
+        </button>
 
     </div>
 
-    <style>
-        /* Neomorphic shadow styles */
-        .shadow-neumorph {
-            box-shadow: 8px 8px 15px #babecc, -8px -8px 15px #ffffff;
-        }
-
-        .hover\:shadow-neumorph-inset:hover {
-            box-shadow: inset 5px 5px 10px #babecc, inset -5px -5px 10px #ffffff;
-        }
-    </style>
-
+    <script src="script.js"></script>
 </body>
 </html>
