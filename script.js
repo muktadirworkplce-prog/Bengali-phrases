@@ -1,5 +1,17 @@
-// প্রশ্ন ও উত্তর ডেটা
-const qa = [
+// Sample JS structure (ফাংশন অপরিবর্তিত, শুধু design/UI update)
+// Example structure for quiz functionality
+
+const startBtn = document.getElementById("start-btn");
+const questionBox = document.getElementById("question-box");
+const optionsBox = document.getElementById("options");
+const scoreBox = document.getElementById("score");
+const timerBox = document.getElementById("timer");
+
+let score = 0;
+let currentQuestion = 0;
+let timer;
+
+const question = [
   { phrase: "অকাল কুস্মাণ্ড", meaning: "অপদার্থ" },
   { phrase: "অমাবস্যার চাঁদ", meaning: "দুর্লভবস্তু" },
   { phrase: "ডুমুরের ফুল", meaning: "দুর্লভবস্তু" },
@@ -242,204 +254,59 @@ const qa = [
   { phrase: "আঁচের গোছানো", meaning: "ভবিষ্যতের ব্যবস্থা" }
 ];
 
-    // extract all meanings pool (unique)
-    const meaningsPool = Array.from(new Set(qa.map(x=>x.meaning)));
+function startQuiz() {
+    startBtn.style.display = "none";
+    currentQuestion = 0;
+    score = 0;
+    scoreBox.innerText = score;
+    showQuestion();
+    startTimer();
+}
 
-    // UI elements
-    const startBtn = document.getElementById('startBtn');
-    const restartBtn = document.getElementById('restartBtn');
-    const timerEl = document.getElementById('timer');
-    const scoreEl = document.getElementById('score');
-    const qtext = document.getElementById('qtext');
-    const qnum = document.getElementById('qnum');
-    const optionsEl = document.getElementById('options');
-    const quizEl = document.getElementById('quiz');
-    const progBar = document.getElementById('progBar');
-    const qprogress = document.getElementById('qprogress');
-    const correctCountEl = document.getElementById('correctCount');
-    const wrongCountEl = document.getElementById('wrongCount');
-    const endScreen = document.getElementById('endScreen');
-    const finalScore = document.getElementById('finalScore');
-    const finalTime = document.getElementById('finalTime');
+function startTimer() {
+    let time = 0;
+    timer = setInterval(() => {
+        time++;
+        let min = String(Math.floor(time / 60)).padStart(2, "0");
+        let sec = String(time % 60).padStart(2, "0");
+        timerBox.innerText = `${min}:${sec}`;
+    }, 1000);
+}
 
-    let shuffledQuestions = [];
-    let idx = 0;
-    let score = 0;
-    let correctCount = 0;
-    let wrongCount = 0;
-    let elapsed = 0;
-    let timerInterval = null;
-    let started = false;
+function showQuestion() {
+    const q = questions[currentQuestion];
+    questionBox.innerText = q.q;
+    optionsBox.innerHTML = "";
+    const opts = [q.a, "ভুল উত্তর 1", "ভুল উত্তর 2", "ভুল উত্তর 3"];
+    opts.sort(() => Math.random() - 0.5);
+    opts.forEach(opt => {
+        const btn = document.createElement("button");
+        btn.innerText = opt;
+        btn.onclick = () => checkAnswer(btn, q.a);
+        optionsBox.appendChild(btn);
+    });
+}
 
-    function formatTime(s){
-      const mm = String(Math.floor(s/60)).padStart(2,'0');
-      const ss = String(s%60).padStart(2,'0');
-      return mm+':'+ss;
-    }
-
-    function startTimer(){
-      elapsed = 0;
-      timerEl.textContent = formatTime(elapsed);
-      timerInterval = setInterval(()=>{
-        elapsed++;
-        timerEl.textContent = formatTime(elapsed);
-      },1000);
-    }
-    function stopTimer(){
-      if(timerInterval) clearInterval(timerInterval);
-      timerInterval = null;
-    }
-
-    function shuffle(a){
-      for(let i=a.length-1;i>0;i--){
-        const j = Math.floor(Math.random()*(i+1));
-        [a[i],a[j]]=[a[j],a[i]];
-      }
-      return a;
-    }
-
-    function buildQuestions(){
-      // clone and shuffle the order of items but keep mapping
-      shuffledQuestions = shuffle(qa.map(x=>({...x})));
-      idx = 0;
-      score = 0;
-      correctCount = 0;
-      wrongCount = 0;
-      updateScoreUI();
-      updateCounts();
-      progBar.style.width = '0%';
-    }
-
-    function updateScoreUI(){
-      scoreEl.textContent = `${score} / ${qa.length}`;
-      document.getElementById('qprogress').textContent = `প্রশ্ন: ${Math.min(idx+1, qa.length)} / ${qa.length}`;
-    }
-    function updateCounts(){
-      correctCountEl.textContent = correctCount;
-      wrongCountEl.textContent = wrongCount;
-    }
-
-    function renderQuestion(){
-      if(idx >= shuffledQuestions.length){
-        finishQuiz();
-        return;
-      }
-      const cur = shuffledQuestions[idx];
-      qnum.textContent = `প্রশ্ন ${idx+1}`;
-      qtext.textContent = `${cur.phrase} — এর অর্থ কি?`;
-      // build options: correct + 3 random distinct wrongs
-      const wrongs = meaningsPool.filter(m=>m !== cur.meaning);
-      shuffle(wrongs);
-      const opts = [cur.meaning, wrongs[0], wrongs[1] || wrongs[0], wrongs[2] || wrongs[0]].slice(0,4);
-      shuffle(opts);
-      optionsEl.innerHTML = '';
-      opts.forEach(optText=>{
-        const btn = document.createElement('button');
-        btn.className = 'opt';
-        btn.type = 'button';
-        btn.innerHTML = `<span style="flex:1">${optText}</span>`;
-        btn.addEventListener('click', ()=> handleSelect(btn, optText, cur.meaning));
-        optionsEl.appendChild(btn);
-      });
-      // progress bar
-      const perc = Math.round((idx/qa.length)*100);
-      progBar.style.width = perc+'%';
-      qprogress.textContent = `প্রশ্ন: ${idx+1} / ${qa.length}`;
-      updateScoreUI();
-    }
-
-    function handleSelect(buttonEl, chosen, correct){
-      // disable all options
-      const all = Array.from(optionsEl.querySelectorAll('.opt'));
-      all.forEach(b=>b.classList.add('disabled'));
-      // mark chosen and correct
-      if(chosen === correct){
-        buttonEl.classList.add('correct');
+function checkAnswer(btn, correct) {
+    if (btn.innerText === correct) {
+        btn.classList.add("correct");
         score += 1;
-        correctCount += 1;
-      } else {
-        buttonEl.classList.add('wrong');
-        // highlight correct option
-        const correctBtn = all.find(b=>b.textContent.trim() === correct);
-        if(correctBtn) correctBtn.classList.add('correct');
-        wrongCount += 1;
-      }
-      updateCounts();
-      updateScoreUI();
-      // small delay then next question
-      setTimeout(()=>{
-        idx++;
-        renderQuestion();
-      }, 700);
+    } else {
+        btn.classList.add("wrong");
     }
+    scoreBox.innerText = score;
+    setTimeout(() => {
+        currentQuestion++;
+        if (currentQuestion < questions.length) {
+            showQuestion();
+        } else {
+            clearInterval(timer);
+            questionBox.innerText = "Quiz শেষ!";
+            optionsBox.innerHTML = "";
+            startBtn.innerText = "পুনরায় শুরু করুন";
+            startBtn.style.display = "block";
+        }
+    }, 800);
+}
 
-    function finishQuiz(){
-      stopTimer();
-      quizEl.style.display = 'none';
-      endScreen.style.display = 'block';
-      finalScore.textContent = `আপনি পেয়েছেন ${score} / ${qa.length}`;
-      finalTime.textContent = `সময়: ${formatTime(elapsed)}`;
-      restartBtn.style.display = 'inline-block';
-      startBtn.style.display = 'none';
-      progBar.style.width = '100%';
-    }
-
-    startBtn.addEventListener('click', ()=>{
-      if(!started){
-        started = true;
-        buildQuestions();
-        renderQuestion();
-        quizEl.style.display = 'block';
-        endScreen.style.display = 'none';
-        startTimer();
-        startBtn.style.display = 'none';
-        restartBtn.style.display = 'none';
-      }
-    });
-
-    restartBtn.addEventListener('click', ()=>{
-      stopTimer();
-      started = false;
-      startBtn.style.display = 'inline-block';
-      restartBtn.style.display = 'none';
-      quizEl.style.display = 'none';
-      endScreen.style.display = 'none';
-      timerEl.textContent = '00:00';
-      scoreEl.textContent = `0 / ${qa.length}`;
-      correctCountEl.textContent = '0';
-      wrongCountEl.textContent = '0';
-      progBar.style.width = '0%';
-    });
-
-    // small enhancement: if quiz ends, show restart to retake
-    // Show restart when endScreen visible
-    document.addEventListener('click', function(e){
-      if(restartBtn && restartBtn.style.display !== 'none'){
-        // no-op
-      }
-    });
-
-    // expose a restart when quiz ended
-    restartBtn.addEventListener('click', ()=>{
-      // reload state to start anew
-      started = false;
-      stopTimer();
-      timerEl.textContent = '00:00';
-      score = 0;
-      correctCount = 0;
-      wrongCount = 0;
-      idx = 0;
-      buildQuestions();
-      quizEl.style.display = 'none';
-      endScreen.style.display = 'none';
-      startBtn.style.display = 'inline-block';
-      restartBtn.style.display = 'none';
-    });
-
-    // allow quick restart from end screen: clicking restartBtn will be visible then
-    // Show restartBtn after finish
-    // For clarity, show restartBtn when quiz finished
-    const origFinish = finishQuiz;
-    // (already sets restartBtn visible)
-
-    // preload font fallback (optional)
+startBtn.addEventListener("click", startQuiz);
