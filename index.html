@@ -3,132 +3,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>বাগধারা MCQ টেস্ট</title>
-  <style>
-/* General body styling */
-body {
-    font-family: 'Poppins', sans-serif;
-    background: #e0e5ec;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    min-height: 100vh;
-    color: #333;
-}
 
-/* Container for the quiz */
-.quiz-container {
-    background: #e0e5ec;
-    border-radius: 20px;
-    box-shadow: 10px 10px 20px #babecc, -10px -10px 20px #ffffff;
-    padding: 30px 40px;
-    max-width: 700px;
-    width: 90%;
-    margin-top: 50px;
-}
-
-/* Heading */
-.quiz-container h1 {
-    text-align: center;
-    font-weight: 700;
-    margin-bottom: 30px;
-    color: #2e3d49;
-}
-
-/* Timer and Marks container */
-.top-info {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 25px;
-}
-
-.top-info div {
-    background: #e0e5ec;
-    padding: 10px 20px;
-    border-radius: 15px;
-    box-shadow: inset 5px 5px 10px #babecc, inset -5px -5px 10px #ffffff;
-    font-weight: 600;
-}
-
-/* Question Box */
-.question-box {
-    background: #e0e5ec;
-    padding: 20px;
-    border-radius: 15px;
-    margin-bottom: 20px;
-    box-shadow: 5px 5px 15px #babecc, -5px -5px 15px #ffffff;
-    font-size: 18px;
-}
-
-/* Options Buttons */
-.options button {
-    display: block;
-    width: 100%;
-    padding: 12px 20px;
-    margin: 10px 0;
-    border: none;
-    border-radius: 15px;
-    background: #e0e5ec;
-    box-shadow: 5px 5px 10px #babecc, -5px -5px 10px #ffffff;
-    font-size: 16px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-.options button:hover {
-    transform: translateY(-2px);
-    box-shadow: 2px 2px 5px #babecc, -2px -2px 5px #ffffff;
-}
-
-/* Correct & Wrong Option styles */
-.correct {
-    background-color: #4caf50 !important;
-    color: white;
-    box-shadow: inset 5px 5px 10px #3b8e3b, inset -5px -5px 10px #66c166;
-}
-
-.wrong {
-    background-color: #f44336 !important;
-    color: white;
-    box-shadow: inset 5px 5px 10px #c33b31, inset -5px -5px 10px #f46666;
-}
-
-/* Start Button */
-.start-btn {
-    display: block;
-    margin: 0 auto 30px auto;
-    padding: 12px 30px;
-    border-radius: 20px;
-    border: none;
-    font-size: 18px;
-    font-weight: 600;
-    cursor: pointer;
-    background: #e0e5ec;
-    box-shadow: 5px 5px 10px #babecc, -5px -5px 10px #ffffff;
-    transition: all 0.2s ease;
-}
-
-.start-btn:hover {
-    transform: translateY(-3px);
-    box-shadow: 2px 2px 5px #babecc, -2px -2px 5px #ffffff;
-}
-
-/* Responsive */
-@media screen and (max-width: 768px) {
-    .quiz-container {
-        padding: 20px 25px;
-    }
-
-    .question-box {
-        font-size: 16px;
-    }
-
-    .options button {
-        font-size: 14px;
-    }
-}
-  </style>
 </head>
 <body>
   <div class="wrap">
@@ -147,9 +22,9 @@ body {
       <div class="status">
         <div>সময়: <span id="timer" class="time">00:00</span></div>
         <div style="width:8px"></div>
-        <div>মার্কস: <span id="score" class="score">0 / 44</span></div>
+        <div>মার্কস: <span id="score" class="score">০ / ২৪০</span></div>
         <div style="width:8px"></div>
-        <div class="small" id="qprogress">প্রশ্ন: 0 / 240</div>
+        <div class="small" id="qprogress">প্রশ্ন: ০ / ২৪০</div>
       </div>
 
       <div class="question-area" id="quiz" style="display:none">
